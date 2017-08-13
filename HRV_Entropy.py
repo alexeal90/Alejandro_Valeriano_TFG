@@ -55,12 +55,13 @@ class HRV_entropy(object):
                     B_m_i[i]=sum(dist<=r)/float((N-m-1))
                 else:
                     A_m_i[i]=sum(dist<=r)/float((N-m-1))
-#    
+#       
         B_m = np.mean(B_m_i)
         A_m = np.mean(A_m_i)
         res= np.log(B_m) - np.log(A_m)
-        
+
         return res
+    
     def TimeIrreversibility(self,rr,tau):
             '''
             ARGUMENTOS DE ENTRADA: 
@@ -116,20 +117,23 @@ class HRV_entropy(object):
 #print ('')
 #print ('Implementation = ' +str(b))
 
+import matplotlib.pyplot as plt
+
 from mix_processes import *
-r = np.logspace(-2,0,100) #vector of r
+r = np.logspace(-2,0,4) #vector of r (np.logspace(-2,0,100))
+s = np.logspace(-2,0,16)
 hrv = HRV_entropy() #create class of hrv entropy
 
-Sampen_01 = []
-Sampen_09 = []
+SampEn_01 = []
+SampEn_09 = []
 
 for r_aux in r:
     SampEn_aux_01 = []
     SampEn_aux_09 = []
-    for i in range(100):
+    for i in range(4): #cambiar a range(100)
         Mix1 = mix(1000,0.1)
         Mix9 = mix(1000,0.9)
-
+        print(str(i))
         S1 = hrv.SampEn(Mix1[:,0],r = r_aux)
         S2 = hrv.SampEn(Mix9[:,0],r = r_aux)
         SampEn_aux_01.append(S1)
@@ -138,5 +142,7 @@ for r_aux in r:
     SampEn_01.append(SampEn_aux_01)
     SampEn_09.append(SampEn_aux_09)
 
-
-Plot (errorbarr)
+plt.figure()
+plt.errorbar(SampEn_01, s)
+plt.figure()
+plt.errorbar(SampEn_09, s)
