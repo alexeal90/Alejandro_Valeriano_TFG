@@ -121,7 +121,7 @@ import matplotlib.pyplot as plt
 
 from mix_processes import *
 r = np.logspace(-2,0,4) #vector of r (np.logspace(-2,0,100))
-#s = np.logspace(-2,0,16)
+s = np.logspace(-2,0,16)
 hrv = HRV_entropy() #create class of hrv entropy
 
 SampEn_01 = []
@@ -143,6 +143,6 @@ for r_aux in r:
     SampEn_09.append(SampEn_aux_09)
 
 plt.figure()
-plt.errorbar(SampEn_01, SampEn_09)
-#plt.figure()
-#plt.errorbar(SampEn_09, s)
+plt.errorbar(SampEn_01, s)
+plt.figure()
+plt.errorbar(SampEn_09, s)
