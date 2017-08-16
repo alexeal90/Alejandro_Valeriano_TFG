@@ -142,7 +142,7 @@ for r_aux in r:
     SampEn_01.append(SampEn_aux_01)
     SampEn_09.append(SampEn_aux_09)
 
+
 plt.figure()
-plt.errorbar(SampEn_01, s)
-plt.figure()
-plt.errorbar(SampEn_09, s)
+plt.errorbar(s, SampEn_01, color='r');
+plt.errorbar(s, SampEn_09, color='k');
