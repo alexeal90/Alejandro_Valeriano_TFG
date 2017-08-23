@@ -117,6 +117,10 @@ class HRV_entropy(object):
 #print ('')
 #print ('Implementation = ' +str(b))
 
+###############################################
+############## SAMPLE ENTROPY #################
+###############################################
+
 import matplotlib.pyplot as plt
 
 from mix_processes import *
@@ -130,7 +134,7 @@ SampEn_09 = []
 for r_aux in r:
     SampEn_aux_01 = []
     SampEn_aux_09 = []
-    for i in range(4): #cambiar a range(100)
+    for i in range(4): # Cambiar a range(100)
         Mix1 = mix(1000,0.1)
         Mix9 = mix(1000,0.9)
         print(str(i))
@@ -146,3 +150,30 @@ for r_aux in r:
 plt.figure()
 plt.errorbar(s, SampEn_01, color='r');
 plt.errorbar(s, SampEn_09, color='k');
+
+###############################################
+########### TIME IRREVERSIBILITY ##############
+###############################################
+
+#p = np.linspace(0.05,0.95,50)
+
+#TimeIrr_01 = []
+#TimeIrr_09 = []
+
+#for p_aux in p:
+#    TimeIrr_aux_01 = []
+#    TimeIrr_aux_09 = []
+#    for i in range(100):
+#        Mix_TI_01 = mix(1000,0.1) # Cambiar Mix = mix(1000, p_aux)
+#        Mix_TI_09 = mix(1000,0.9) 
+#        TI_01 = hrv.TimeIrreversibility(Mix_TI_01[:,0])
+#        TI_09 = hrv.TimeIrreversibility(Mix_TI_09[:,0])
+#        TimeIrr_aux_01.append(TI_01)
+#        TimeIrr_aux_09.append(TI_09)
+    
+#    TimeIrr_01.append(TimeIrr_aux_01)
+#    TimeIrr_09.append(TimeIrr_aux_09)
+    
+#figure(2)
+
+#############################################
