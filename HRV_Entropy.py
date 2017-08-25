@@ -120,7 +120,7 @@ class HRV_entropy(object):
 ###############################################
 ############## SAMPLE ENTROPY #################
 ###############################################
-
+"""
 import matplotlib.pyplot as plt
 
 from mix_processes import *
@@ -150,7 +150,7 @@ for r_aux in r:
 plt.figure()
 plt.errorbar(s, SampEn_01, color='r');
 plt.errorbar(s, SampEn_09, color='k');
-
+"""
 ###############################################
 ########### TIME IRREVERSIBILITY ##############
 ###############################################
