@@ -70,6 +70,7 @@ class HRV_entropy(object):
 
            ...DE SALIDA:
            .-indexAsimetry ---> Indice de asimetria Time Irr
+           .-A_tux -> assimetry for each scale (tau)
                BIBLIOGRAFIA:
                 Costa, M., A. L. Goldberger, et al. (2008). 
                 Multiscale Analysis of Heart Rate Dynamics: Entropy and Time
@@ -89,9 +90,9 @@ class HRV_entropy(object):
                     y_i[i-1]=(x_i[i+j-1]-x_i[i-1])                    
                     
                 
-                A_tau.append = (np.sum(self.heaviside(-y_i))-np.sum(self.heaviside(y_i)))/ (N-j)
+                A_tau.append(np.sum(self.heaviside(-y_i))-np.sum(self.heaviside(y_i))/(N-j))
                 
-            return np.sum(A_tau)
+            return np.sum(A_tau),A_tau
              
     def heaviside(self,x):
             '''
