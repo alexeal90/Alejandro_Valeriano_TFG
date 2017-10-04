@@ -23,18 +23,17 @@ Sampen_09 = []
 
 for ii, r_aux in enumerate(r):
     print (ii, 'of', len(r))
-    print (r_aux)
     Sampen_aux_01 = [] #save sampen for each 100 simulations for a given r
     Sampen_aux_03 = []
     Sampen_aux_05 = []
     Sampen_aux_07 = []
     Sampen_aux_09 = []
-    for i in range(10):
-        Mix1 = mix(100,0.1)
-        Mix3 = mix(100,0.3)
-        Mix5 = mix(100,0.5)
-        Mix7 = mix(100,0.7)
-        Mix9 = mix(100,0.9)
+    for i in range(200):
+        Mix1 = mix(200,0.1)
+        Mix3 = mix(200,0.3)
+        Mix5 = mix(200,0.5)
+        Mix7 = mix(200,0.7)
+        Mix9 = mix(200,0.9)
 
         S1 = hrv.SampEn(Mix1[:,0],r = r_aux)
         S3 = hrv.SampEn(Mix3[:,0],r = r_aux)
@@ -70,10 +69,13 @@ s09_std = [np.std(s) for s in Sampen_09]
 
 #now x-axis is going to be r, y-axis mean sampen, error std
 
-plt.errorbar(r,s01_m,s01_std,fmt = 'o-',label = 'Sampen Mix 0.1')
-plt.errorbar(r,s03_m,s03_std,fmt = '.-',label = 'Sampen Mix 0.3')
-plt.errorbar(r,s05_m,s05_std,fmt = '--',label = 'Sampen Mix 0.5')
-plt.errorbar(r,s07_m,s07_std,fmt = 'o-',label = 'Sampen Mix 0.7')
-plt.errorbar(r,s09_m,s09_std,fmt = '^-',label = 'Sampen Mix 0.9')
+plt.errorbar(r,s01_m,s01_std,fmt = 'o-',label = 'p = 0.1')
+plt.errorbar(r,s03_m,s03_std,fmt = '.-',label = 'p = 0.3')
+plt.errorbar(r,s05_m,s05_std,fmt = '--',label = 'p = 0.5')
+plt.errorbar(r,s07_m,s07_std,fmt = 'o-',label = 'p = 0.7')
+plt.errorbar(r,s09_m,s09_std,fmt = '^-',label = 'p = 0.9')
 plt.xscale('log')
 plt.legend()
+plt.xlabel('r')
+plt.ylabel('SampEn')
+plt.title('Mix processes')
