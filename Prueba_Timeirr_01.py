@@ -84,15 +84,15 @@ t08_std = [np.std(s) for s in Timeirr_08]
 t09_m = [np.mean(s) for s in Timeirr_09]
 t09_std = [np.std(s) for s in Timeirr_09]
 
-P = np.arange(0.1, 1, 0.1)
+P_tau = np.arange(0.1, 1, 0.1)
 
-plt.errorbar(P,t01_m,t01_std,fmt = 'o-')
-plt.errorbar(P,t02_m,t02_std,fmt = 'o-')
-plt.errorbar(P,t03_m,t03_std,fmt = 'o-')
-plt.errorbar(P,t04_m,t04_std,fmt = 'o-')
-plt.errorbar(P,t05_m,t05_std,fmt = 'o-')
-plt.errorbar(P,t06_m,t06_std,fmt = 'o-')
-plt.errorbar(P,t07_m,t07_std,fmt = 'o-')
-plt.errorbar(P,t08_m,t08_std,fmt = 'o-')
-plt.errorbar(P,t09_m,t09_std,fmt = 'o-')
+plt.errorbar(P_tau,t01_m,t01_std,fmt = 'o-')
+plt.errorbar(P_tau,t02_m,t02_std,fmt = 'o-')
+plt.errorbar(P_tau,t03_m,t03_std,fmt = 'o-')
+plt.errorbar(P_tau,t04_m,t04_std,fmt = 'o-')
+plt.errorbar(P_tau,t05_m,t05_std,fmt = 'o-')
+plt.errorbar(P_tau,t06_m,t06_std,fmt = 'o-')
+plt.errorbar(P_tau,t07_m,t07_std,fmt = 'o-')
+plt.errorbar(P_tau,t08_m,t08_std,fmt = 'o-')
+plt.errorbar(P_tau,t09_m,t09_std,fmt = 'o-')
 
