@@ -22,7 +22,15 @@ import scipy as sc
 
 hrv = HRV_entropy() #create class of hrv entropy
 
-T_irr = [[0 for x in range(10)] for y in range(9)]
+Timeirr_01 = []
+Timeirr_02 = []
+Timeirr_03 = []
+Timeirr_04 = []
+Timeirr_05 = []
+Timeirr_06 = []
+Timeirr_07 = []
+Timeirr_08 = []
+Timeirr_09 = []
 
 tau  = 10
 N = 300*tau
@@ -37,35 +45,54 @@ for i in range(10):
     Mix8 = mix(N,0.8)
     Mix9 = mix(N,0.9)
 
-    T_irr_aux = np.arange(9)
-
-    asi_1,T_irr_aux[0] = hrv.TimeIrreversibility(Mix1[:,0],tau)
-    asi_2,T_irr_aux[1] = hrv.TimeIrreversibility(Mix2[:,0],tau)
-    asi_3,T_irr_aux[2] = hrv.TimeIrreversibility(Mix3[:,0],tau)
-    asi_4,T_irr_aux[3] = hrv.TimeIrreversibility(Mix4[:,0],tau)
-    asi_5,T_irr_aux[4] = hrv.TimeIrreversibility(Mix5[:,0],tau)
-    asi_6,T_irr_aux[5] = hrv.TimeIrreversibility(Mix6[:,0],tau)
-    asi_7,T_irr_aux[6] = hrv.TimeIrreversibility(Mix7[:,0],tau)
-    asi_8,T_irr_aux[7] = hrv.TimeIrreversibility(Mix8[:,0],tau)
-    asi_9,T_irr_aux[8] = hrv.TimeIrreversibility(Mix9[:,0],tau)
+    asi_1,tirr_1 = hrv.TimeIrreversibility(Mix1[:,0],tau)
+    asi_2,tirr_2 = hrv.TimeIrreversibility(Mix2[:,0],tau)
+    asi_3,tirr_3 = hrv.TimeIrreversibility(Mix3[:,0],tau)
+    asi_4,tirr_4 = hrv.TimeIrreversibility(Mix4[:,0],tau)
+    asi_5,tirr_5 = hrv.TimeIrreversibility(Mix5[:,0],tau)
+    asi_6,tirr_6 = hrv.TimeIrreversibility(Mix6[:,0],tau)
+    asi_7,tirr_7 = hrv.TimeIrreversibility(Mix7[:,0],tau)
+    asi_8,tirr_8 = hrv.TimeIrreversibility(Mix8[:,0],tau)
+    asi_9,tirr_9 = hrv.TimeIrreversibility(Mix9[:,0],tau)
     
-    
-    for j in range(9):
-        T_irr[j][i] = T_irr_aux[j]
+    Timeirr_01.append(tirr_1)
+    Timeirr_02.append(tirr_2)
+    Timeirr_03.append(tirr_3)
+    Timeirr_04.append(tirr_4)
+    Timeirr_05.append(tirr_5)
+    Timeirr_06.append(tirr_6)
+    Timeirr_07.append(tirr_7)
+    Timeirr_08.append(tirr_8)
+    Timeirr_09.append(tirr_9)
 
-T_irr_mean = np.arange(9)
-T_irr_std = np.arange(9)
-for k, l in enumerate(T_irr):
-    T_irr_mean[k] = np.mean(T_irr[k])
-    T_irr_std[k] = np.std(T_irr[k])
+t01_m = [np.mean(s) for s in Timeirr_01]
+t01_std = [np.std(s) for s in Timeirr_01]
+t02_m = [np.mean(s) for s in Timeirr_02]
+t02_std = [np.std(s) for s in Timeirr_02]
+t03_m = [np.mean(s) for s in Timeirr_03]
+t03_std = [np.std(s) for s in Timeirr_04]
+t04_m = [np.mean(s) for s in Timeirr_04]
+t04_std = [np.std(s) for s in Timeirr_04]
+t05_m = [np.mean(s) for s in Timeirr_05]
+t05_std = [np.std(s) for s in Timeirr_05]
+t06_m = [np.mean(s) for s in Timeirr_06]
+t06_std = [np.std(s) for s in Timeirr_06]
+t07_m = [np.mean(s) for s in Timeirr_07]
+t07_std = [np.std(s) for s in Timeirr_07]
+t08_m = [np.mean(s) for s in Timeirr_08]
+t08_std = [np.std(s) for s in Timeirr_08]
+t09_m = [np.mean(s) for s in Timeirr_09]
+t09_std = [np.std(s) for s in Timeirr_09]
 
-plt.errorbar(0.1,T_irr_mean[0],yerr = T_irr_std[0],fmt = 'o-')
-plt.errorbar(0.2,T_irr_mean[1],yerr = T_irr_std[1],fmt = 'o-')
-plt.errorbar(0.3,T_irr_mean[2],yerr = T_irr_std[2],fmt = 'o-')
-plt.errorbar(0.4,T_irr_mean[3],yerr = T_irr_std[3],fmt = 'o-')
-plt.errorbar(0.5,T_irr_mean[4],yerr = T_irr_std[4],fmt = 'o-')
-plt.errorbar(0.6,T_irr_mean[5],yerr = T_irr_std[5],fmt = 'o-')
-plt.errorbar(0.7,T_irr_mean[6],yerr = T_irr_std[6],fmt = 'o-')
-plt.errorbar(0.8,T_irr_mean[7],yerr = T_irr_std[7],fmt = 'o-')
-plt.errorbar(0.9,T_irr_mean[8],yerr = T_irr_std[8],fmt = 'o-')
+P = np.arange(0.1, 1, 0.1)
+
+plt.errorbar(P,t01_m,t01_std,fmt = 'o-')
+plt.errorbar(P,t02_m,t02_std,fmt = 'o-')
+plt.errorbar(P,t03_m,t03_std,fmt = 'o-')
+plt.errorbar(P,t04_m,t04_std,fmt = 'o-')
+plt.errorbar(P,t05_m,t05_std,fmt = 'o-')
+plt.errorbar(P,t06_m,t06_std,fmt = 'o-')
+plt.errorbar(P,t07_m,t07_std,fmt = 'o-')
+plt.errorbar(P,t08_m,t08_std,fmt = 'o-')
+plt.errorbar(P,t09_m,t09_std,fmt = 'o-')
 
