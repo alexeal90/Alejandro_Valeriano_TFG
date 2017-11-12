@@ -70,7 +70,7 @@ class HRV_entropy(object):
 
            ...DE SALIDA:
            .-indexAsimetry ---> Indice de asimetria Time Irr
-           .-A_tux -> assimetry for each scale (tau)
+           .-A_tau -> assimetry for each scale (tau)
                BIBLIOGRAFIA:
                 Costa, M., A. L. Goldberger, et al. (2008). 
                 Multiscale Analysis of Heart Rate Dynamics: Entropy and Time
