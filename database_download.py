@@ -37,3 +37,16 @@ signals, fields=wfdb.srdsamp('ctu_database/1001', channels=[0, 1], sampfrom=100,
 plot(signals)
 print signals
 print fields
+
+#%%
+# A very simple solution to remove 0 values from fhr
+# FHR has a lot of samples with noise which are codify with 0 in the FRH signals
+# a very simple approach to delete this noisy samples could be remove
+# and concatenate the segments
+
+fhr = signals[:,0]
+
+fhr = fhr[fhr != 0]
+
+plt.plot(fhr)
+
