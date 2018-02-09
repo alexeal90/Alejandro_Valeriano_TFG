@@ -21,6 +21,16 @@ cwd = os.getcwd()
 dldir = os.path.join(cwd, 'ctu_database/')
 
 
+def get_value_from_field(field):
+    """
+    Function that gest a float value from a string in a field
+    """
+    
+    field_aux = field.split()
+    value = float(field_aux[1])
+    
+    return value
+
 #loop over .dat files
 for filename in glob.iglob(dldir+'*.dat'):
      #print(dldir+'/%s' % filename)
@@ -49,19 +59,36 @@ for filename in glob.iglob(dldir+'*.dat'):
      uc = uc[fhr!=0]
      fhr = fhr[fhr != 0]
      t_c = np.arange(0,len(fhr))/fs
-     exit
+     #exit
      ##ALEX CODE#####
      
      #definition of the dict
+     pH = fields['comments'][2]
+     pH = get_value_from_field(pH)
+     apgar_1 = fields['comments'][6]
+     apgar_1 = get_value_from_field(apgar_1)
+     
+     apgar_5 = fields['comments'][7]
+     apgar_5 = get_value_from_field(apgar_5)
+     
+     fet = {'id':fet_id,'sampen_r1':None,'sampen_r2':None,'time_irrever':None,
+            'sampen_r2':None,'case':None,'pH':pH,'apgar_1':apgar_1,'apgar_5':apgar_5}
      
     #computing each index
+    
+    
     #sampen
     
     #timeirrev
     
     #save all the information needed into the dict
-    
+ #   fet['sampen_r1'] = 
     #save dict using np.save
+     np.save(dldir + fet_id+'.npy',fet)  
+     
+     #to load fet dictionary
+     #fet = np.load(dldir + fet_id+'.npy').flat[0]
+     
      
      ##ALEX CODE#####
 
