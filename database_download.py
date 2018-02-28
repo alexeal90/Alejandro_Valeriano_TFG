@@ -19,7 +19,7 @@ cwd = os.getcwd()
 dldir = os.path.join(cwd, 'ctu_database')
 # Make sure to use a new directory
 if(os.path.exists(dldir)) :
-    print "Folder already existed"
+    print ("Folder already existed")
 else:
     wfdb.dldatabase('ctu-uhb-ctgdb', dlbasedir = dldir)
 

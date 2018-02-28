@@ -24,8 +24,8 @@ for ii, r_aux in enumerate(r):
     Sampen_aux_01 = [] #save sampen for each 100 simulations for a given r
     Sampen_aux_09 = []
     for i in range(10):
-        Mix1 = mix(500,0.1)
-        Mix9 = mix(500,0.9)
+        Mix1 = mix(200,0.1)
+        Mix9 = mix(200,0.9)
 
         S1 = hrv.SampEn(Mix1[:,0],r = r_aux)
         S9 = hrv.SampEn(Mix9[:,0],r = r_aux)

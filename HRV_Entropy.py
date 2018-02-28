@@ -45,6 +45,7 @@ class HRV_entropy(object):
 #        
 #        #para cada fila de la matrix el maximo entre las columnas de la matriz de
 #        #diferencias
+                #print (i, 'of', range(f))
                 dist = np.max(abs(Mi-M),axis = 1)
 #        #para eliminar las autocomparaciones
 #        

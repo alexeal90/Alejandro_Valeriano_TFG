@@ -8,7 +8,7 @@ Database preprocessing TFG Alejandro
 @author: obarquero
 """
 
-
+from HRV_Entropy import HRV_entropy
 import wfdb
 import os
 import numpy as np
@@ -19,7 +19,17 @@ import glob
 #
 cwd = os.getcwd()
 dldir = os.path.join(cwd, 'ctu_database/')
+hrv = HRV_entropy()
+index = 1
 
+#get signal and header info
+#samp_end 30 min
+#4Hz, so 30*60 = sec and samp =
+fs = 4. #Hz
+dur = 30 #min
+samp_end = int((dur*60)*fs)
+
+sampen02_std = []
 
 def get_value_from_field(field):
     """
@@ -31,10 +41,35 @@ def get_value_from_field(field):
     
     return value
 
+#def get_sampen_01(fhr):
+#    s01 = hrv.SampEn(fhr,np.std(fhr))
+    
+#    return s01
+
+
+#loop over .dat files to calculate r of Sampen02
+for filename in glob.iglob(dldir+'*.dat'):
+    
+     fname = os.path.basename(filename)
+
+     dot_idx = fname.index('.')    
+     
+     fet_id = fname[:dot_idx]
+     
+     signals, fields=wfdb.srdsamp(dldir + fet_id, channels=[0, 1], sampfrom=0, sampto=samp_end)
+     
+     fhr = signals[:,0]
+     fhr = fhr[fhr != 0]
+    
+     sampen02_std.append(np.std(fhr))
+
+r2 = np.mean(sampen02_std)
+
 #loop over .dat files
 for filename in glob.iglob(dldir+'*.dat'):
      #print(dldir+'/%s' % filename)
-     
+     print (index)
+     index = index + 1
      #get fname
      fname = os.path.basename(filename)
      
@@ -43,12 +78,6 @@ for filename in glob.iglob(dldir+'*.dat'):
      
      fet_id = fname[:dot_idx]
      
-     #get signal and header info
-     #samp_end 30 min
-     #4Hz, so 30*60 = sec and samp = 
-     fs = 4. #Hz
-     dur = 30 #min
-     samp_end = int((dur*60)*fs)
      signals, fields=wfdb.srdsamp(dldir + fet_id, channels=[0, 1], sampfrom=0, sampto=samp_end)
      
      fhr = signals[:,0]
@@ -71,8 +100,17 @@ for filename in glob.iglob(dldir+'*.dat'):
      apgar_5 = fields['comments'][7]
      apgar_5 = get_value_from_field(apgar_5)
      
-     fet = {'id':fet_id,'sampen_r1':None,'sampen_r2':None,'time_irrever':None,
-            'sampen_r2':None,'case':None,'pH':pH,'apgar_1':apgar_1,'apgar_5':apgar_5}
+     
+     
+     fhr2 = fhr[0:9] #Cojo las 10 primeras muestras de cada fhr para que las pruebas sean mas cortas.
+     r1 = np.std(fhr2)
+     sampen_r1 = hrv.SampEn(fhr2,r = r1) #Luego cambiar fhr2 por fhr
+     sampen_r2 = hrv.SampEn(fhr2,r = r2) #Sale 0 porque fhr2 muy pequeño. Luego cambiar fhr2 por fhr
+     
+     #print (len(fhr)) #Para comprobar que la longitud de cada fhr es diferente
+     
+     fet = {'id':fet_id,'sampen_r1':sampen_r1,'sampen_r2':sampen_r2,'time_irrever':None,
+            'case':None,'pH':pH,'apgar_1':apgar_1,'apgar_5':apgar_5}
      
     #computing each index
     
