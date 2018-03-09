@@ -68,7 +68,7 @@ r2 = np.mean(sampen02_std)
 #loop over .dat files
 for filename in glob.iglob(dldir+'*.dat'):
      #print(dldir+'/%s' % filename)
-     print (index)
+     print(index,'/',len(glob.glob(dldir+'*.dat')))
      index = index + 1
      #get fname
      fname = os.path.basename(filename)
@@ -104,8 +104,8 @@ for filename in glob.iglob(dldir+'*.dat'):
      
      fhr2 = fhr[0:9] #Cojo las 10 primeras muestras de cada fhr para que las pruebas sean mas cortas.
      r1 = np.std(fhr2)
-     sampen_r1 = hrv.SampEn(fhr2,r = r1) #Luego cambiar fhr2 por fhr
-     sampen_r2 = hrv.SampEn(fhr2,r = r2) #Sale 0 porque fhr2 muy pequeño. Luego cambiar fhr2 por fhr
+     sampen_r1 = hrv.SampEn(fhr,r = r1) #Luego cambiar fhr2 por fhr
+     sampen_r2 = hrv.SampEn(fhr,r = r2) #Sale 0 porque fhr2 muy pequeño. Luego cambiar fhr2 por fhr
      
      #print (len(fhr)) #Para comprobar que la longitud de cada fhr es diferente
      
