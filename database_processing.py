@@ -102,14 +102,17 @@ for filename in glob.iglob(dldir+'*.dat'):
      
      
      
-     fhr2 = fhr[0:9] #Cojo las 10 primeras muestras de cada fhr para que las pruebas sean mas cortas.
-     r1 = np.std(fhr2)
-     sampen_r1 = hrv.SampEn(fhr2,r = r1) #Luego cambiar fhr2 por fhr
-     sampen_r2 = hrv.SampEn(fhr2,r = r2) #Sale 0 porque fhr2 muy pequeño. Luego cambiar fhr2 por fhr
+     #fhr2 = fhr[0:9] #Cojo las 10 primeras muestras de cada fhr para que las pruebas sean mas cortas.
      
+     r1 = np.std(fhr)
+     sampen_r1 = hrv.SampEn(fhr,r = r1) #Luego cambiar fhr2 por fhr
+     sampen_r2 = hrv.SampEn(fhr,r = r2) #Sale 0 porque fhr2 muy pequeño. Luego cambiar fhr2 por fhr
+     
+     tau = np.floor(len(fhr)/1200.)
+     asi,time_irrever = hrv.TimeIrreversibility(fhr,tau)
      #print (len(fhr)) #Para comprobar que la longitud de cada fhr es diferente
      
-     fet = {'id':fet_id,'sampen_r1':sampen_r1,'sampen_r2':sampen_r2,'time_irrever':None,
+     fet = {'id':fet_id,'sampen_r1':sampen_r1,'sampen_r2':sampen_r2,'time_irrever':time_irrever,
             'case':None,'pH':pH,'apgar_1':apgar_1,'apgar_5':apgar_5}
      
     #computing each index
