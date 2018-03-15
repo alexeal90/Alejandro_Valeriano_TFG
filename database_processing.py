@@ -105,6 +105,7 @@ for filename in glob.iglob(dldir+'*.dat'):
      #fhr2 = fhr[0:9] #Cojo las 10 primeras muestras de cada fhr para que las pruebas sean mas cortas.
      
      r1 = np.std(fhr)
+     
      sampen_r1 = hrv.SampEn(fhr,r = r1) #Luego cambiar fhr2 por fhr
      sampen_r2 = hrv.SampEn(fhr,r = r2) #Sale 0 porque fhr2 muy pequeño. Luego cambiar fhr2 por fhr
      
