@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Mar 17 11:24:59 2018
+
+Script to perfomr complete analysis
+
+@author: obarquero
+"""
+import numpy as np
+import pandas as pd
+import glob
+
+def create_pandas_db():
+    """
+    Fucntion to create pandas db from ctu_database
+    """
+    
+    #read npy data
+    ctu_df = pd.DataFrame(columns=['id','apgar_1','apgar_5','pH','sampen_r1','sampen_r2','time_irrever'])
+    
+    folder = './ctu_database'
+    
+    for filename in glob.iglob(folder+'/'+'*.npy'):
+        
+        print(filename)
+        fet = np.load(filename).flat[0]
+        
+        fet['time_irrever'] = np.sum(fet['time_irrever']) #we use assimetry index
+        
+        #remove case
+        del fet['case']
+        
+        df_aux = pd.DataFrame(data = fet,index = [0])
+        
+        ctu_df = ctu_df.append(df_aux,ignore_index = True)
+        
+        print("ok")
+        
+    return ctu_df
+        
+        
+ctu_df = create_pandas_db()
+
+
+
