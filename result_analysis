@@ -10,6 +10,7 @@ Script to perfomr complete analysis
 import numpy as np
 import pandas as pd
 import glob
+import matplotlib.pyplot as plt
 
 def create_pandas_db():
     """
@@ -35,12 +36,97 @@ def create_pandas_db():
         
         ctu_df = ctu_df.append(df_aux,ignore_index = True)
         
-        print("ok")
         
     return ctu_df
         
         
 ctu_df = create_pandas_db()
 
+#Include differente criterias as case
+
+#case according to apgar_1
+#a newborn is a case if apgar_1 <= 7
+ctu_df['case_apgar_1'] = ctu_df['apgar_1'] <= 7
+
+#case according to pH
+#a newborn is a case if ph < 7.20
+ctu_df['case_ph'] = ctu_df['pH'] <= 7.20
+
+
+###################################################33
+#%%
+#Exploratory analysis.
+
+#1) Plot histograms af all variables
+
+#example_1
+plt.close('all')
+ctu_df['sampen_r1'].hist()
+
+plt.figure()
+#all variables
+
+
+
+#2) Plot scatter plots with apgar_1 and Ph with any other variable
+
+#example
+plt.figure()
+ctu_df.plot.scatter('sampen_r2','pH')
+
+
+#3) Create boxplot between any variable agouped by case_ph and case_apgar_1
+
+#example
+plt.figure()
+ctu_df.boxplot('sampen_r1',by='case_apgar_1')
+
+
+#4) Describe de la base de datos. Media y desviación estandar de cada vairable
+print(ctu_df.describe())
+
+
+#%%
+# Test estadísticos
+
+#linear regression between apgar_1 y ph con las otras variables. Para cada variable y para 
+#todas las variables 
+#Vamos a testear si apgar_1 (ph) = w0 + w1 x_1
+#donde x_1 puede ser sampen_r1,sampen_r2 y time_irrer
+#y también apgar_1(ph) = w0 + w1x1 +w2 x2 +w3 x3
+#(con las tres variables explicativas a la vez) 
+
+#example
+import statsmodels.api as sm
+
+X = ctu_df['sampen_r1']
+y = ctu_df['apgar_1']
+
+model = sm.OLS(y,X).fit()
+print(model.summary())
+# --Verificación de normalidad de los datos---
+# Comprobar si las variables explicativas (todas, menos apgar, ph y caseX) son normales o no
+
+
+#Let's perform classification analysis using case. Statistical comparisons
+#between variables for differente cases
+from statsmodels.stats.diagnostic import kstest_normal
+
+#Example 1
+#get different variables for healthy and case
+sampen_r1_health = ctu_df['sampen_r1'][ctu_df['case_apgar_1']==False]
+sampen_r1_case = ctu_df['sampen_r1'][ctu_df['case_apgar_1']==True]
+
+#evaluate normality
+stat,p_value1 = kstest_normal(sampen_r1_health)
+
+#evaluate normality
+stat, p_value2 = kstest_normal(sampen_r1_case)
+
+#ambos son menores de 0.05, por lo que podemos utilizar t-test
+
+from statsmodels.stats.weightstats import ttest_ind
+
+t,p_value,df = ttest_ind(sampen_r1_health,sampen_r1_case)
 
 
