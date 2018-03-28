@@ -53,33 +53,75 @@ ctu_df['case_apgar_1'] = ctu_df['apgar_1'] <= 7
 ctu_df['case_ph'] = ctu_df['pH'] <= 7.20
 
 
-###################################################33
+###################################################
 #%%
 #Exploratory analysis.
 
 #1) Plot histograms af all variables
 
-#example_1
 plt.close('all')
-ctu_df['sampen_r1'].hist()
+
+ctu_df['apgar_1'].hist()
+ctu_df['apgar_5'].hist()
+plt.legend(['apgar_1', 'apgar_5'])
+plt.xlabel('Puntuación')
+plt.ylabel('Casos')
+plt.title('Histograma Apgar')
 
 plt.figure()
-#all variables
+ctu_df['pH'].hist()
+plt.xlabel('pH')
+plt.ylabel('Casos')
+plt.title('Histograma pH')
 
+plt.figure()
+ctu_df['sampen_r1'].hist()
+ctu_df['sampen_r2'].hist()
+plt.legend(['sampen_r1', 'sampen_r2'])
+plt.xlabel('SampEn')
+plt.ylabel('Casos')
+plt.title('Histograma Sample Entropy')
 
+plt.figure()
+ctu_df['time_irrever'].hist()
+plt.xlabel('Time_irrever')
+plt.ylabel('Casos')
+plt.title('Histograma Time Irreversibility')
 
 #2) Plot scatter plots with apgar_1 and Ph with any other variable
 
 #example
 plt.figure()
+ctu_df.plot.scatter('sampen_r1','pH')
+plt.figure()
+ctu_df.plot.scatter('sampen_r1','apgar_1')
+
+plt.figure()
 ctu_df.plot.scatter('sampen_r2','pH')
+plt.figure()
+ctu_df.plot.scatter('sampen_r2','apgar_1')
 
-
+plt.figure()
+ctu_df.plot.scatter('time_irrever','pH')
+plt.figure()
+ctu_df.plot.scatter('time_irrever','apgar_1')
 #3) Create boxplot between any variable agouped by case_ph and case_apgar_1
 
 #example
 plt.figure()
 ctu_df.boxplot('sampen_r1',by='case_apgar_1')
+plt.figure()
+ctu_df.boxplot('sampen_r1',by='case_ph')
+
+plt.figure()
+ctu_df.boxplot('sampen_r2',by='case_apgar_1')
+plt.figure()
+ctu_df.boxplot('sampen_r2',by='case_ph')
+
+plt.figure()
+ctu_df.boxplot('time_irrever',by='case_apgar_1')
+plt.figure()
+ctu_df.boxplot('time_irrever',by='case_ph')
 
 
 #4) Describe de la base de datos. Media y desviación estandar de cada vairable
