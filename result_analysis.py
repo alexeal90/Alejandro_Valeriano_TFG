@@ -65,13 +65,13 @@ ctu_df['apgar_1'].hist()
 ctu_df['apgar_5'].hist()
 plt.legend(['apgar_1', 'apgar_5'])
 plt.xlabel('Puntuación')
-plt.ylabel('Casos')
+plt.ylabel('Fetos')
 plt.title('Histograma Apgar')
 
 plt.figure()
 ctu_df['pH'].hist()
 plt.xlabel('pH')
-plt.ylabel('Casos')
+plt.ylabel('Fetos')
 plt.title('Histograma pH')
 
 plt.figure()
@@ -79,13 +79,13 @@ ctu_df['sampen_r1'].hist()
 ctu_df['sampen_r2'].hist()
 plt.legend(['sampen_r1', 'sampen_r2'])
 plt.xlabel('SampEn')
-plt.ylabel('Casos')
+plt.ylabel('Fetos')
 plt.title('Histograma Sample Entropy')
 
 plt.figure()
 ctu_df['time_irrever'].hist()
 plt.xlabel('Time_irrever')
-plt.ylabel('Casos')
+plt.ylabel('Fetos')
 plt.title('Histograma Time Irreversibility')
 
 #2) Plot scatter plots with apgar_1 and Ph with any other variable
@@ -110,18 +110,27 @@ ctu_df.plot.scatter('time_irrever','apgar_1')
 #example
 plt.figure()
 ctu_df.boxplot('sampen_r1',by='case_apgar_1')
+plt.ylabel('sampen_r1')
 plt.figure()
 ctu_df.boxplot('sampen_r1',by='case_ph')
+plt.ylabel('sampen_r1')
+
 
 plt.figure()
 ctu_df.boxplot('sampen_r2',by='case_apgar_1')
+plt.ylabel('sampen_r2')
 plt.figure()
 ctu_df.boxplot('sampen_r2',by='case_ph')
+plt.ylabel('sampen_r2')
+
 
 plt.figure()
 ctu_df.boxplot('time_irrever',by='case_apgar_1')
+plt.ylabel('time_irrever')
 plt.figure()
 ctu_df.boxplot('time_irrever',by='case_ph')
+plt.ylabel('time_irrever')
+
 
 
 #4) Describe de la base de datos. Media y desviación estandar de cada vairable
@@ -140,15 +149,65 @@ print(ctu_df.describe())
 
 #example
 import statsmodels.api as sm
+from statsmodels.sandbox.regression.predstd import wls_prediction_std
 
-X = ctu_df['sampen_r1']
+X_s1 = ctu_df['sampen_r1']
+X_s2 = ctu_df['sampen_r2']
+X_ti = ctu_df['time_irrever']
 y = ctu_df['apgar_1']
 
-model = sm.OLS(y,X).fit()
-print(model.summary())
+model_s1 = sm.OLS(y,X_s1).fit()
+print(model_s1.summary())
+prstd, iv_l, iv_u = wls_prediction_std(model_s1)
+
+fig, ax = plt.subplots(figsize=(10,8))
+
+ax.plot(X_s1, y, 'o', label="data")
+#ax.plot(X_s1, X_s1, 'b-', label="True")
+ax.plot(X_s1, model_s1.fittedvalues, 'r-o', label="OLS")
+ax.plot(X_s1, iv_u, 'b--', label= "upper confidence limit")
+ax.plot(X_s1, iv_l, 'b--', label= "lower confidence limit")
+plt.xlabel('sampen_r1')
+plt.ylabel('puntuación test apgar_1')
+plt.title('Mínimos cuadrados ordinarios sampen_r1/apgar_1')
+ax.legend(loc='best');
+
 # --Verificación de normalidad de los datos---
 # Comprobar si las variables explicativas (todas, menos apgar, ph y caseX) son normales o no
+model_s2 = sm.OLS(y,X_s2).fit()
+print(model_s2.summary())
+prstd, iv_l, iv_u = wls_prediction_std(model_s2)
 
+fig, ax = plt.subplots(figsize=(10,8))
+
+ax.plot(X_s2, y, 'o', label="data")
+#ax.plot(X_s2, X_s2, 'b-', label="True")
+ax.plot(X_s2, model_s2.fittedvalues, 'r-o', label="OLS")
+ax.plot(X_s2, iv_u, 'b--', label= "upper confidence limit")
+ax.plot(X_s2, iv_l, 'b--', label= "lower confidence limit")
+plt.xlabel('sampen_r2')
+plt.ylabel('puntuación test apgar_1')
+plt.title('Mínimos cuadrados ordinarios sampen_r2/apgar_1')
+ax.legend(loc='best');
+
+
+
+
+model_ti = sm.OLS(y,X_ti).fit()
+print(model_ti.summary())
+prstd, iv_l, iv_u = wls_prediction_std(model_ti)
+
+fig, ax = plt.subplots(figsize=(10,8))
+
+ax.plot(X_ti, y, 'o', label="data")
+#ax.plot(X_ti, X_ti, 'b-', label="True")
+ax.plot(X_ti, model_ti.fittedvalues, 'r-o', label="OLS")
+ax.plot(X_ti, iv_u, 'b--', label= "upper confidence limit")
+ax.plot(X_ti, iv_l, 'b--', label= "lower confidence limit")
+plt.xlabel('time_irrever')
+plt.ylabel('puntuación test apgar_1')
+plt.title('Mínimos cuadrados ordinarios time_irrever/apgar_1')
+ax.legend(loc='best');
 
 #Let's perform classification analysis using case. Statistical comparisons
 #between variables for differente cases
@@ -160,7 +219,7 @@ sampen_r1_health = ctu_df['sampen_r1'][ctu_df['case_apgar_1']==False]
 sampen_r1_case = ctu_df['sampen_r1'][ctu_df['case_apgar_1']==True]
 
 #evaluate normality
-stat,p_value1 = kstest_normal(sampen_r1_health)
+stat, p_value1 = kstest_normal(sampen_r1_health)
 
 #evaluate normality
 stat, p_value2 = kstest_normal(sampen_r1_case)
