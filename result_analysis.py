@@ -209,6 +209,7 @@ plt.ylabel('puntuación test apgar_1')
 plt.title('Mínimos cuadrados ordinarios time_irrever/apgar_1')
 ax.legend(loc='best');
 
+#%%
 #Let's perform classification analysis using case. Statistical comparisons
 #between variables for differente cases
 from statsmodels.stats.diagnostic import kstest_normal
@@ -219,10 +220,12 @@ sampen_r1_health = ctu_df['sampen_r1'][ctu_df['case_apgar_1']==False]
 sampen_r1_case = ctu_df['sampen_r1'][ctu_df['case_apgar_1']==True]
 
 #evaluate normality
-stat, p_value1 = kstest_normal(sampen_r1_health)
+stat, p_value1_1 = kstest_normal(sampen_r1_health)
+## p_value1_1 = 9.31e-10 < 0.05
 
 #evaluate normality
-stat, p_value2 = kstest_normal(sampen_r1_case)
+stat, p_value2_1 = kstest_normal(sampen_r1_case)
+## p_value2_1 = 0.002 < 0.05
 
 #ambos son menores de 0.05, por lo que podemos utilizar t-test
 
@@ -230,4 +233,40 @@ from statsmodels.stats.weightstats import ttest_ind
 
 t,p_value,df = ttest_ind(sampen_r1_health,sampen_r1_case)
 
+############# FOR SAMPEN_R2 ##############
 
+sampen_r2_health = ctu_df['sampen_r2'][ctu_df['case_apgar_1']==False]
+sampen_r2_case = ctu_df['sampen_r2'][ctu_df['case_apgar_1']==True]
+
+#evaluate normality
+stat, p_value1_2 = kstest_normal(sampen_r2_health)
+## p_value1_2 = 7.35e-10 < 0.05
+
+#evaluate normality
+stat, p_value2_2 = kstest_normal(sampen_r2_case)
+## p_value1_2 = 1.01e-05 < 0.05
+
+#ambos son menores de 0.05, por lo que podemos utilizar t-test
+
+from statsmodels.stats.weightstats import ttest_ind
+
+t,p_value,df = ttest_ind(sampen_r2_health,sampen_r2_case)
+
+############# FOR TIME_IRREVER ##############
+
+time_irr_health = ctu_df['time_irrever'][ctu_df['case_apgar_1']==False]
+time_irr_case = ctu_df['time_irrever'][ctu_df['case_apgar_1']==True]
+
+#evaluate normality
+stat, p_value1_3 = kstest_normal(time_irr_health)
+## p_value1 = 0.00017 < 0.05
+
+#evaluate normality
+stat, p_value2_3 = kstest_normal(time_irr_case)
+## p_value1 = 0.318 > 0.05
+
+#solo uno es menor de 0.05
+
+#from statsmodels.stats.weightstats import ttest_ind
+
+#t,p_value,df = ttest_ind(time_irr_health,time_irr_case)
