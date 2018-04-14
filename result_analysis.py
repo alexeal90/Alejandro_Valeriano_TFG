@@ -156,7 +156,8 @@ X_s2 = ctu_df['sampen_r2']
 X_ti = ctu_df['time_irrever']
 y = ctu_df['apgar_1']
 
-model_s1 = sm.OLS(y,X_s1).fit()
+X = np.vstack((np.ones(X_s1.shape),X_s1)).T
+model_s1 = sm.OLS(y,X).fit()
 print(model_s1.summary())
 prstd, iv_l, iv_u = wls_prediction_std(model_s1)
 
@@ -164,49 +165,125 @@ fig, ax = plt.subplots(figsize=(10,8))
 
 ax.plot(X_s1, y, 'o', label="data")
 #ax.plot(X_s1, X_s1, 'b-', label="True")
-ax.plot(X_s1, model_s1.fittedvalues, 'r-o', label="OLS")
-ax.plot(X_s1, iv_u, 'b--', label= "upper confidence limit")
-ax.plot(X_s1, iv_l, 'b--', label= "lower confidence limit")
+ax.plot(X_s1, model_s1.fittedvalues,color = 'gray', label="OLS")
+s = 'apgar_1 = '+str(round(model_s1.params[0],2))+'*SampEn_1'
+ax.text(0.02,15,s)
+#ax.plot(X_s1, iv_u, 'b--', label= "upper confidence limit")
+#ax.plot(X_s1, iv_l, 'b--', label= "lower confidence limit")
 plt.xlabel('sampen_r1')
-plt.ylabel('puntuación test apgar_1')
-plt.title('Mínimos cuadrados ordinarios sampen_r1/apgar_1')
+plt.ylabel('Apgar_1')
+plt.title('Regresion sampen_r1/apgar_1')
 ax.legend(loc='best');
 
 # --Verificación de normalidad de los datos---
 # Comprobar si las variables explicativas (todas, menos apgar, ph y caseX) son normales o no
-model_s2 = sm.OLS(y,X_s2).fit()
+X = np.vstack((np.ones(X_s2.shape),X_s2)).T 
+model_s2 = sm.OLS(y,X).fit()
 print(model_s2.summary())
 prstd, iv_l, iv_u = wls_prediction_std(model_s2)
 
 fig, ax = plt.subplots(figsize=(10,8))
 
 ax.plot(X_s2, y, 'o', label="data")
-#ax.plot(X_s2, X_s2, 'b-', label="True")
-ax.plot(X_s2, model_s2.fittedvalues, 'r-o', label="OLS")
-ax.plot(X_s2, iv_u, 'b--', label= "upper confidence limit")
-ax.plot(X_s2, iv_l, 'b--', label= "lower confidence limit")
+#ax.plot(X_s1, X_s1, 'b-', label="True")
+ax.plot(X_s2, model_s2.fittedvalues,color = 'gray', label="OLS")
+s = 'apgar_1 = '+str(round(model_s2.params[0],2))+'*SampEn_1'
+ax.text(0.02,15,s)
+#ax.plot(X_s1, iv_u, 'b--', label= "upper confidence limit")
+#ax.plot(X_s1, iv_l, 'b--', label= "lower confidence limit")
 plt.xlabel('sampen_r2')
-plt.ylabel('puntuación test apgar_1')
-plt.title('Mínimos cuadrados ordinarios sampen_r2/apgar_1')
+plt.ylabel('Apgar_1')
+plt.title('Regresion sampen_r2/apgar_1')
 ax.legend(loc='best');
 
 
 
-
-model_ti = sm.OLS(y,X_ti).fit()
+X = np.vstack((np.ones(X_ti.shape),X_ti)).T 
+model_ti = sm.OLS(y,X).fit()
 print(model_ti.summary())
 prstd, iv_l, iv_u = wls_prediction_std(model_ti)
 
 fig, ax = plt.subplots(figsize=(10,8))
 
+
 ax.plot(X_ti, y, 'o', label="data")
-#ax.plot(X_ti, X_ti, 'b-', label="True")
-ax.plot(X_ti, model_ti.fittedvalues, 'r-o', label="OLS")
-ax.plot(X_ti, iv_u, 'b--', label= "upper confidence limit")
-ax.plot(X_ti, iv_l, 'b--', label= "lower confidence limit")
-plt.xlabel('time_irrever')
-plt.ylabel('puntuación test apgar_1')
-plt.title('Mínimos cuadrados ordinarios time_irrever/apgar_1')
+#ax.plot(X_s1, X_s1, 'b-', label="True")
+ax.plot(X_ti, model_ti.fittedvalues,color = 'gray', label="OLS")
+s = 'apgar_1 = '+str(round(model_ti.params[0],2))+'*SampEn_1'
+ax.text(0.02,15,s)
+#ax.plot(X_s1, iv_u, 'b--', label= "upper confidence limit")
+#ax.plot(X_s1, iv_l, 'b--', label= "lower confidence limit")
+plt.xlabel('ti')
+plt.ylabel('Apgar_1')
+plt.title('Regresion ti/apgar_1')
+ax.legend(loc='best');
+
+#%% Regression analysis with pH
+X_s1 = ctu_df['sampen_r1']
+X_s2 = ctu_df['sampen_r2']
+X_ti = ctu_df['time_irrever']
+y = ctu_df['pH']
+
+X = np.vstack((np.ones(X_s1.shape),np.log(X_s1))).T
+model_s1 = sm.OLS(y,X).fit()
+print(model_s1.summary())
+prstd, iv_l, iv_u = wls_prediction_std(model_s1)
+
+fig, ax = plt.subplots(figsize=(10,8))
+
+ax.plot(np.log(X_s1), y, 'o', label="data")
+#ax.plot(X_s1, X_s1, 'b-', label="True")
+ax.plot(np.log(np.sort(X_s1)),model_s1.params[0] + model_s1.params[1]*(np.log(np.sort(X_s1))) ,color = 'gray', label="OLS")
+s = 'apgar_1 = '+str(round(model_s1.params[0],2))+'*SampEn_1'
+ax.text(0.02,15,s)
+#ax.plot(X_s1, iv_u, 'b--', label= "upper confidence limit")
+#ax.plot(X_s1, iv_l, 'b--', label= "lower confidence limit")
+plt.xlabel('sampen_r1')
+plt.ylabel('pH')
+plt.title('Regresion sampen_r1/pH')
+ax.legend(loc='best');
+
+# --Verificación de normalidad de los datos---
+# Comprobar si las variables explicativas (todas, menos apgar, ph y caseX) son normales o no
+X = np.vstack((np.ones(X_s2.shape),np.log(X_s2))).T 
+model_s2 = sm.OLS(y,X).fit()
+print(model_s2.summary())
+prstd, iv_l, iv_u = wls_prediction_std(model_s2)
+
+fig, ax = plt.subplots(figsize=(10,8))
+
+ax.plot(np.log(X_s2), y, 'o', label="data")
+#ax.plot(X_s1, X_s1, 'b-', label="True")
+ax.plot(np.log(np.sort(X_s2)), model_s2.params[0] + model_s2.params[1]*(np.log(np.sort(X_s2))),color = 'gray', label="OLS")
+s = 'apgar_1 = '+str(round(model_s2.params[0],2))+'*SampEn_1'
+ax.text(0.02,15,s)
+#ax.plot(X_s1, iv_u, 'b--', label= "upper confidence limit")
+#ax.plot(X_s1, iv_l, 'b--', label= "lower confidence limit")
+plt.xlabel('sampen_r2')
+plt.ylabel('pH')
+plt.title('Regresion sampen_r2/pH')
+ax.legend(loc='best');
+
+
+
+X = np.vstack((np.ones(X_ti.shape),np.log(X_ti+10))).T 
+model_ti = sm.OLS(y,X).fit()
+print(model_ti.summary())
+prstd, iv_l, iv_u = wls_prediction_std(model_ti)
+
+fig, ax = plt.subplots(figsize=(10,8))
+
+
+ax.plot(np.log(X_ti+10), y, 'o', label="data")
+#ax.plot(X_s1, X_s1, 'b-', label="True")
+ax.plot(np.log(np.sort(X_ti+10)),  model_ti.params[0] + model_ti.params[1]*(np.log(np.sort(X_ti+10))),color = 'gray', label="OLS")
+s = 'apgar_1 = '+str(round(model_ti.params[0],2))+'*SampEn_1'
+ax.text(0.02,15,s)
+#ax.plot(X_s1, iv_u, 'b--', label= "upper confidence limit")
+#ax.plot(X_s1, iv_l, 'b--', label= "lower confidence limit")
+plt.xlabel('ti')
+plt.ylabel('pH')
+plt.title('Regresion ti/pH')
 ax.legend(loc='best');
 
 #%%
