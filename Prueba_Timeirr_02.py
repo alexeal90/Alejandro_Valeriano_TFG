@@ -15,7 +15,7 @@ import scipy as sc
 
 hrv = HRV_entropy() #create class of hrv entropy
 
-asi = [[0 for x in range(10)] for y in range(9)]
+asi = np.zeros((10,9))
 
 tau  = 10
 N = 300*tau
@@ -30,32 +30,38 @@ for i in range(10):
     Mix8 = mix(N,0.8)
     Mix9 = mix(N,0.9)
     
-    asi_aux = np.arange(9)
 
-    asi_aux[0],tirr_1 = hrv.TimeIrreversibility(Mix1[:,0],tau)
-    asi_aux[1],tirr_2 = hrv.TimeIrreversibility(Mix2[:,0],tau)
-    asi_aux[2],tirr_3 = hrv.TimeIrreversibility(Mix3[:,0],tau)
-    asi_aux[3],tirr_4 = hrv.TimeIrreversibility(Mix4[:,0],tau)
-    asi_aux[4],tirr_5 = hrv.TimeIrreversibility(Mix5[:,0],tau)
-    asi_aux[5],tirr_6 = hrv.TimeIrreversibility(Mix6[:,0],tau)
-    asi_aux[6],tirr_7 = hrv.TimeIrreversibility(Mix7[:,0],tau)
-    asi_aux[7],tirr_8 = hrv.TimeIrreversibility(Mix8[:,0],tau)
-    asi_aux[8],tirr_9 = hrv.TimeIrreversibility(Mix9[:,0],tau)
+    asi[i,0],tirr_1 = hrv.TimeIrreversibility(Mix1,tau)
+    asi[i,1],tirr_2 = hrv.TimeIrreversibility(Mix2[:,0],tau)
+    asi[i,2],tirr_3 = hrv.TimeIrreversibility(Mix3[:,0],tau)
+    asi[i,3],tirr_4 = hrv.TimeIrreversibility(Mix4[:,0],tau)
+    asi[i,4],tirr_5 = hrv.TimeIrreversibility(Mix5[:,0],tau)
+    asi[i,5],tirr_6 = hrv.TimeIrreversibility(Mix6[:,0],tau)
+    asi[i,6],tirr_7 = hrv.TimeIrreversibility(Mix7[:,0],tau)
+    asi[i,7],tirr_8 = hrv.TimeIrreversibility(Mix8[:,0],tau)
+    asi[i,8],tirr_9 = hrv.TimeIrreversibility(Mix9[:,0],tau)
     
-    for j in range(9):
-        asi[j][i] = asi_aux[j]
+    #for j in range(9):
+     #   asi[j][i] = asi_aux[j]
 
 
-asi_mean = np.arange(9)
-asi_std = np.arange(9)
-for k, l in enumerate(asi):
-    asi_mean[k] = np.mean(asi[k])
-    asi_std[k] = np.std(asi[k])
+#asi_mean = np.arange(9)
+#asi_std = np.arange(9)
+#for k, l in enumerate(asi):
+#    asi_mean[k] = np.mean(asi[k])
+#    asi_std[k] = np.std(asi[k])
+
+asi_mean = np.mean(asi,axis=0)
+asi_std = np.std(asi, axis = 0)
 
 P = np.arange(0.1, 1, 0.1)
 for Each_P in range(9):
     plt.errorbar(P[Each_P],asi_mean[Each_P],yerr = asi_std[Each_P],fmt = 'o-')
 
+plt.xlabel('MIX parameter $p$')
+plt.ylabel('Asymmetry index $m\pm std$')
+
+plt.axhline(y=0, color='gray', linestyle='--')
 #%% Antiguo codigo
 '''
 hrv = HRV_entropy() #create class of hrv entropy
